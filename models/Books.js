@@ -4,24 +4,22 @@ let BookSchema=new mongoose.Schema({
         type:String,
         required:[true,"Please provide a Book name"]
     },
-    soldby:{
+    soldby:{  //from user db
         type:String,
         required:[true,"Please give the username"]
     },
-    soldbyId:{
+    soldbyId:{  //from params
         type:String,
         required:[true]
     },
     img:{
-        type:String
+        type:String,
+        required:[true],
     },
     postedOn:Date,
     price:{
         type:Number,
         required:[true,"Price is required"]
-    },
-    cardno:{
-        type:String
     }
 })
 let Book=mongoose.model("Books",BookSchema);

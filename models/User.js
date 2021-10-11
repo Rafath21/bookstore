@@ -24,26 +24,19 @@ let UserSchema=new mongoose.Schema({
     },
     sold:[
         {
-            name:String,
-            soldby:String,
-            img:String,
-            postedOn:Date,
-            price: Number,
-            soldbyId:String,
+           type: mongoose.Schema.Types.ObjectId,
+           ref:'Books'
         }
     ],
     bought:[
         {
-            name:String,
-            soldby:String,
-            img:String,
-            postedOn:Date,
-            price: Number,
-            soldbyId:String
+           type: mongoose.Schema.Types.ObjectId,
+           ref:'Books'
         }
     ],
     resetPasswordToken:String,
     ressetPasswordExpire:Date,
+    cardno:Number,
 })
 UserSchema.pre("save",async function(next){
     if(!this.isModified("password")){
@@ -70,8 +63,8 @@ UserSchema.methods.getResetPasswordToken=function(){
     this.ressetPasswordExpire=Date.now()+10*(60*1000);
     return resetToken;
 }
-UserSchema.methods.addSold=function(obj){
-    this.sold.push(obj);
+UserSchema.methods.addSold=function(bookId){
+    this.sold.push(bookId);
 }
 UserSchema.methods.addBought=function(obj){
     this.bought.push(obj);

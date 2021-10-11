@@ -11,9 +11,9 @@ app.get("/",(req,res,next)=>{
 })
 connectDB();
 //app.use("/books",require('./routes/bookRoute'))
-app.use("/auth",require('./routes/authRoute'));
-app.use("/",require('./routes/homeRoute'));
-app.use("/sell",require('./routes/sellRoute'));
+app.use("/api/v1/auth",require('./routes/authRoute'));
+app.use("/api/v1/home",require('./routes/homeRoute'));
+app.use("/api/v1/sell",require('./routes/sellRoute'));
 
 app.listen(PORT,()=>{
  console.log(`server is listening at:${PORT}`);

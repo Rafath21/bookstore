@@ -7,26 +7,25 @@ exports.sellBooks=async(req,res)=>{
             message:"Please login to post!"
         })
     }
-    const {username,bookname,img,price,cardno}=req.body;
+    const {bookname,img,price}=req.body;
+    let user=await User.findOne({id});
+    if(!user){
+        res.status(400).json("User does not exist");
+    }
+    console.log("doc:",user);
+    let username=user.username;
     const obj={
         name:bookname,
         soldby:username,
         soldbyId:id,
         img:img,
         price:price,
-        cardno:cardno
     }
     try{
-    await Book.create(obj);
-    let user=await User.findById(id);
-    if(user){
-         user.addSold(obj);
-         await user.save();
-    }else{
-        res.status(400).json({
-            message:"Cannot add book. Something went wrong"
-        })
-    }
+    let bookCreated=await Book.create(obj);
+    user.addSold(bookCreated._id);
+    await user.save();
+    
     res.status(200).json({
         message:"Book added successfully!"
     })

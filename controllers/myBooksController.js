@@ -7,16 +7,11 @@ exports.myBooks=async(req,res)=>{
         })
     }
     try{
-    let user=await User.findById(id);
-    if(user){
-        res.status(200).json({
-            data:user.sold,
-        })
-    }else{
-        res.status(400).json({
-            message:"User does not exist"
-        })
-    }
+    let soldBooks=await User.findById(id).populate('sold')
+    console.log("sold books:",soldBooks);
+    res.status(200).json({
+        soldBooks
+    })
     }
     catch(err){
         res.status(400).json({
