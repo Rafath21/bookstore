@@ -20,7 +20,14 @@ let BookSchema=new mongoose.Schema({
     price:{
         type:Number,
         required:[true,"Price is required"]
+    },
+    bookStatus:{
+        type:String,
+        default:"unsold"
     }
 })
+BookSchema.methods.updatebookStatus=function(status){
+ this.bookStatus=status;
+}
 let Book=mongoose.model("Books",BookSchema);
 module.exports=Book;

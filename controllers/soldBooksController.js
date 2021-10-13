@@ -1,5 +1,5 @@
 const User=require("../models/User");
-exports.myBooks=async(req,res)=>{
+exports.soldBooks=async(req,res)=>{
     const id=req.params.id;
     if(id==""){
         res.status(300).json({

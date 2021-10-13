@@ -28,15 +28,19 @@ let UserSchema=new mongoose.Schema({
            ref:'Books'
         }
     ],
-    bought:[
+    orders:[
         {
            type: mongoose.Schema.Types.ObjectId,
-           ref:'Books'
+           ref:'Order'
         }
     ],
     resetPasswordToken:String,
     ressetPasswordExpire:Date,
     cardno:Number,
+    role:{
+        type:String,
+        default:"user"
+    }
 })
 UserSchema.pre("save",async function(next){
     if(!this.isModified("password")){
@@ -66,8 +70,11 @@ UserSchema.methods.getResetPasswordToken=function(){
 UserSchema.methods.addSold=function(bookId){
     this.sold.push(bookId);
 }
-UserSchema.methods.addBought=function(obj){
-    this.bought.push(obj);
+UserSchema.methods.addBought=function(orderId){
+    this.orders.push(orderId);
+}
+UserSchema.methods.updateRole=function(role){
+    this.role=role
 }
 let User=mongoose.model("User",UserSchema);
 module.exports=User;
