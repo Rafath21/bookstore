@@ -24,6 +24,14 @@ let BookSchema=new mongoose.Schema({
     bookStatus:{
         type:String,
         default:"unsold"
+    },
+    shipsTo:{
+        type:[String],
+        required:[true,"Please mention the locations where the book can be shipped."]
+    },
+    cardno:{
+        type:String,
+        required:[true,"Please give the card number on which buyer can pay the bill."]
     }
 })
 BookSchema.methods.updatebookStatus=function(status){
