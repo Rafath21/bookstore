@@ -2,8 +2,9 @@
 const express=require('express');
 const app=express();
 const router=express.Router();
+const {isAuthenticated} =require("../../middlewares/auth")
 const {soldstatusGet,soldstatusPost} =require('../../controllers/userControllers/soldstatusController');
-router.route('/:id').get(soldstatusGet);
-router.route('/:id').put(soldstatusPost);
+router.route('/:id').get(isAuthenticated,soldstatusGet);
+router.route('/:id').put(isAuthenticated,soldstatusPost);
 module.exports=router;
 

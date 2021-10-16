@@ -4,93 +4,56 @@ import styled from "styled-components";
 import axios from "axios";
 import { getBooks } from "../../actions/homeActions";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 const Home = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const { user, isAuthenticated } = useSelector((state) => state.user);
   const { loading, error, books } = useSelector((state) => state.books);
   useEffect(() => {
     dispatch(getBooks());
   }, [dispatch]);
- 
+  console.log(books);
+
   return (
     <>
       <HomeContainer>
         <Heading>Book Store</Heading>
-        {books ? (
-          <Books>
-            <Book>
-              <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
-              <BookName>Harry Potter</BookName>
-              <BookInfo>Sold by: Mr.x</BookInfo>
-              <BookInfo>$20</BookInfo>
-              <BuynowBtn>Buy now</BuynowBtn>
-            </Book>
-            <Book>
-              <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
-              <BookName>Harry Potter</BookName>
-              <BookInfo>Sold by: Mr.x</BookInfo>
-              <BookInfo>$20</BookInfo>
-              <BuynowBtn>Buy now</BuynowBtn>
-            </Book>
-            <Book>
-              <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
-              <BookName>Harry Potter</BookName>
-              <BookInfo>Sold by: Mr.x</BookInfo>
-              <BookInfo>$20</BookInfo>
-              <BuynowBtn>Buy now</BuynowBtn>
-            </Book>
-            <Book>
-              <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
-              <BookName>Harry Potter</BookName>
-              <BookInfo>Sold by: Mr.x</BookInfo>
-              <BookInfo>$20</BookInfo>
-              <BuynowBtn>Buy now</BuynowBtn>
-            </Book>
-            <Book>
-              <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
-              <BookName>Harry Potter</BookName>
-              <BookInfo>Sold by: Mr.x</BookInfo>
-              <BookInfo>$20</BookInfo>
-              <BuynowBtn>Buy now</BuynowBtn>
-            </Book>
-            <Book>
-              <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
-              <BookName>Harry Potter</BookName>
-              <BookInfo>Sold by: Mr.x</BookInfo>
-              <BookInfo>$20</BookInfo>
-              <BuynowBtn>Buy now</BuynowBtn>
-            </Book>
-            <Book>
-              <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
-              <BookName>Harry Potter</BookName>
-              <BookInfo>Sold by: Mr.x</BookInfo>
-              <BookInfo>$20</BookInfo>
-              <BuynowBtn>Buy now</BuynowBtn>
-            </Book>
-            <Book>
-              <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
-              <BookName>Harry Potter</BookName>
-              <BookInfo>Sold by: Mr.x</BookInfo>
-              <BookInfo>$20</BookInfo>
-              <BuynowBtn>Buy now</BuynowBtn>
-            </Book>
-            <Book>
-              <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
-              <BookName>Harry Potter</BookName>
-              <BookInfo>Sold by: Mr.x</BookInfo>
-              <BookInfo>$20</BookInfo>
-              <BuynowBtn>Buy now</BuynowBtn>
-            </Book>
-            <Book>
-              <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
-              <BookName>Harry Potter</BookName>
-              <BookInfo>Sold by: Mr.x</BookInfo>
-              <BookInfo>$20</BookInfo>
-              <BuynowBtn>Buy now</BuynowBtn>
-            </Book>
-          </Books>
-        ) : (
-          <Nobooks>No Books Available</Nobooks>
-        )}
+        <Books>
+          {books.length > 0 ? (
+            books.map((book) => {
+              return (
+                <Book>
+                  <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
+                  <BookName>{book.name}</BookName>
+                  <BookInfo>Sold by: {book.soldby}</BookInfo>
+                  <BookInfo>{book.price}</BookInfo>
+                  <BuynowBtn
+                    onClick={() => {
+                      if (!isAuthenticated) {
+                        history.push("/login");
+                      } else {
+                        history.push({
+                          pathname: `/placeorder/${book._id}`,
+                          state: {
+                            bookid: book._id,
+                            bookname: book.name,
+                            bookprice: book.price,
+                            booksoldby: book.soldby,
+                          },
+                        });
+                      }
+                    }}
+                  >
+                    Buy now
+                  </BuynowBtn>
+                </Book>
+              );
+            })
+          ) : (
+            <Nobooks>No Books Available</Nobooks>
+          )}
+        </Books>
       </HomeContainer>
     </>
   );

@@ -3,7 +3,8 @@
 const express=require('express');
 const app=express();
 const router=express.Router();
+const {isAuthenticated} =require("../../middlewares/auth")
 const {myOrders} =require('../../controllers/userControllers/myordersController');
-router.route('/:username').get(myOrders);
+router.route('/:username').get(isAuthenticated,myOrders);
 module.exports=router;
 

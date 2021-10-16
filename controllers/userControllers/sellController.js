@@ -1,9 +1,15 @@
 const Book=require("../../models/Books");
 const User=require("../../models/User");
 const sendEmail=require('../../utils/sendEmail');
-
+const cloudinary=require('cloudinary');
 
 exports.sellBooks=async(req,res)=>{
+    const myCloud=await cloudinary.v2.uploader.upload(req.body.img,{
+        folder:"bookCovers",
+        width:150,
+        crop:scale
+    });
+
     const id=req.params.id;
     if(id==""){
         res.status(300).json({
@@ -22,7 +28,10 @@ exports.sellBooks=async(req,res)=>{
         name:bookname,
         soldby:username,
         soldbyId:id,
-        img:img,
+        img:{
+            public_id:myCloud.public_id,
+            url:myCloud.secure_url,
+        },
         price:price,
         shipsTo:shipsTo,
         cardno:cardno

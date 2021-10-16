@@ -4,11 +4,12 @@ const ErrorResponse = require("../../utils/errorResponse");
 const sendEmail=require('../../utils/sendEmail');
 const sendToken=(user,statusCode,res)=>{
     const token=user.getSignedJwtToken();
-    res.status(statusCode).json({success:true,token});
+    res.status(statusCode).json({success:true,token,user});
 }
 exports.register=async(req,res,next)=>{
     const{username,email,password}=req.body;
     try{
+        console.log(req.body);
         const user=await User.create({
             username,
             email,

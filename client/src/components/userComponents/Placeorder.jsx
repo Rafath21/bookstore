@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
+import { useLocation, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { placeOrder } from "../../actions/placeOrderActions";
 
@@ -9,10 +10,17 @@ const Placeorder = () => {
   const { loading, error, orderPlaced } = useSelector(
     (state) => state.orderPlaced
   );
+  const { user, isAuthenticated } = useSelector((state) => state.user);
   const [address, setAddress] = useState("");
   const [pincode, setPincode] = useState(Number);
   const [phone, setPhone] = useState(Number);
   const [city, setCity] = useState("");
+  let location = useLocation();
+  let history = useHistory();
+  let bookid = location.state.bookid;
+  let state = location.state;
+  console.log(bookid);
+  console.log("username:", user.username);
   const order = () => {
     const shippingInfo = {
       address,
@@ -20,7 +28,8 @@ const Placeorder = () => {
       phone,
       city,
     };
-    dispatch(placeOrder("bushra", "6169bba58174abe824de4915", shippingInfo));
+    dispatch(placeOrder(user.username, bookid, shippingInfo));
+    history.push("/");
   };
   return (
     <>
@@ -28,9 +37,9 @@ const Placeorder = () => {
         <BookSection>
           <h2>BOOK INFO:</h2>
           <Img src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></Img>
-          <BookInfo>Harry Potter</BookInfo>
-          <BookInfo>Sold by: Mr.x</BookInfo>
-          <BookInfo>$20</BookInfo>
+          <BookInfo>{state.bookname}</BookInfo>
+          <BookInfo>Sold by: {state.booksoldby}</BookInfo>
+          <BookInfo>{`$${state.bookprice}`}</BookInfo>
         </BookSection>
         <ShippingInfo>
           <h2>SHIPPING INFO:</h2>

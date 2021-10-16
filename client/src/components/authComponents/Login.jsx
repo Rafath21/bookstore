@@ -2,36 +2,29 @@ import "../../css/auth.css";
 import { Redirect, Link, useHistory } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { login, clearErrors } from "../../actions/authActions";
 let Login = () => {
   let history = useHistory();
+  let dispatch = useDispatch();
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
-  let [error, setError] = useState("");
+  const { error, loading, isAuthenticated } = useSelector(
+    (state) => state.user
+  );
   useEffect(() => {
-    if (localStorage.getItem("authToken")) {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+
+    if (isAuthenticated) {
       history.push("/");
     }
-  }, [history]);
+  }, [dispatch, error, history, isAuthenticated]);
+
   async function handleLogin() {
-    const config = {
-      header: {
-        "Content-type": "application/json",
-      },
-    };
-    try {
-      const { data } = await axios.post(
-        "http://localhost:8000/auth/login",
-        { email, password },
-        config
-      );
-      localStorage.setItem("authToken", data.token);
-      history.push("/");
-    } catch (err) {
-      setError(err.response.data.error);
-      setTimeout(() => {
-        setError("");
-      }, 5000);
-    }
+    dispatch(login(email, password));
   }
   return (
     <div>

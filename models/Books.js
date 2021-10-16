@@ -13,8 +13,14 @@ let BookSchema=new mongoose.Schema({
         required:[true]
     },
     img:{
-        type:String,
+        public_id:{
+            type:String,
         required:[true],
+        },
+        url:{
+            type:String,
+        required:[true],
+        }
     },
     postedOn:Date,
     price:{

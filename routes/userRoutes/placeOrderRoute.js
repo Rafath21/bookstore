@@ -8,5 +8,5 @@ router.route("/:name").get((req,res)=>{
     console.log("the query is:",req.query.bookid);
 })
 //keyword bookid should be passed
-router.route("/:username").post(placeorder)
+router.route("/:username").post(isAuthenticated,placeorder)
 module.exports=router;

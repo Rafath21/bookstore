@@ -1,48 +1,40 @@
 import "../../css/auth.css";
 import { Redirect, Link, useHistory } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import axios from "axios";
-
+import { useSelector, useDispatch } from "react-redux";
+import { register, clearErrors } from "../../actions/authActions";
 let Register = () => {
   let history = useHistory();
+  let dispatch = useDispatch();
   let [username, setUsername] = useState("");
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [confirmPassword, setconfirmPassword] = useState("");
-  let [error, setError] = useState("");
+  const { error, loading, isAuthenticated } = useSelector(
+    (state) => state.user
+  );
+
   let validRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
   async function handleRegister(e) {
-    const config = {
-      header: {
-        "Content-type": "application/json",
-      },
-    };
     if (password != confirmPassword) {
-      setPassword("");
-      setconfirmPassword("");
-      setTimeout(() => {
-        setError("");
-      }, 5000);
-      return setError("Passwords do not match");
-    }
-    try {
-      const { data } = await axios.post(
-        "http://localhost:8000/auth/register",
-        { username, email, password },
-        config
-      );
-      console.log("data:", data);
-      localStorage.setItem("authToken", data.token);
-      history.push("/");
-    } catch (err) {
-      setError(err.response.data.error);
-      setTimeout(() => {
-        setError("");
-      }, 5000);
+      alert("passwords don't match");
+    } else {
+      dispatch(register(username, email, password));
     }
   }
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+
+    if (isAuthenticated) {
+      history.push("/");
+    }
+  }, [dispatch, error, history, isAuthenticated]);
   return (
     <div>
       <div className="register-form-container">
@@ -73,7 +65,7 @@ let Register = () => {
               setEmail(e.currentTarget.value);
             }}
             class="email-input"
-            type="text"
+            type="email"
             placeholder="Enter Email"
             name="email"
             id="email"

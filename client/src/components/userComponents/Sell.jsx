@@ -8,7 +8,7 @@ import {
 import { getSoldBooks, sellBook } from "../../actions/sellActions";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-const Sell = () => {
+const Sell = ({ history }) => {
   const dispatch = useDispatch();
   const [sellBoxOpen, setsellBoxOpen] = useState(false);
   let [bookname, setBookname] = useState("");
@@ -17,11 +17,17 @@ const Sell = () => {
   const [bookPreview, setBookPreview] = useState("/DefBook.png");
   const [bookImg, setBookImg] = useState("");
   let [shipsTo, setShipsTo] = useState("");
+  const { user, isAuthenticated } = useSelector((state) => state.user);
   const { loading, error, soldBooks } = useSelector((state) => state.soldBooks);
   const { result } = useSelector((state) => state.result);
   useEffect(() => {
     dispatch(getSoldBooks("6166b38478f476c0b807e0b5"));
   }, [dispatch]);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      alert("Please login!");
+    }
+  }, [history, isAuthenticated]);
   const updateBookImg = (e) => {
     const reader = new FileReader();
 
