@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { placeOrder } from "../../actions/placeOrderActions";
@@ -19,8 +19,7 @@ const Placeorder = () => {
   let history = useHistory();
   let bookid = location.state.bookid;
   let state = location.state;
-  console.log(bookid);
-  console.log("username:", user.username);
+
   const order = () => {
     const shippingInfo = {
       address,
@@ -29,8 +28,14 @@ const Placeorder = () => {
       city,
     };
     dispatch(placeOrder(user.username, bookid, shippingInfo));
-    history.push("/");
   };
+  useEffect(() => {
+    if (orderPlaced) {
+      history.push("/");
+    } else {
+      alert("couldn't place order");
+    }
+  }, [orderPlaced]);
   return (
     <>
       <Wrapper>

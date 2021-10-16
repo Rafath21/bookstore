@@ -11,6 +11,9 @@ export const placeOrder=(username,bookid,shippingInfo,paymentInfo)=>async(dispat
         await axios({
                         method: 'post',
                         url: `http://localhost:8000/api/v1/placeorder/${username}?bookid=${bookid}`,
+                        withCredentials: true,
+        headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'
+    },
                         data: {
                           shippingInfo:shippingInfo,
                           paymentInfo:paymentInfo

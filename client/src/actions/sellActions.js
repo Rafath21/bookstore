@@ -7,7 +7,13 @@ export const getSoldBooks=(id)=>async(dispatch)=>{
         dispatch({
             type:GET_SOLD_BOOKS_REQUEST
         })
-        const {data}=await axios.get(`http://localhost:8000/api/v1/sell/${id}`);
+        const {data}=await axios({
+            method:"GET",
+             withCredentials: true,
+            headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+            url:`http://localhost:8000/api/v1/sell/${id}`,
+           
+        });
         dispatch({
             type:GET_SOLD_BOOKS_SUCCESS,
             payload:data
@@ -16,8 +22,7 @@ export const getSoldBooks=(id)=>async(dispatch)=>{
     catch(err){
          dispatch({
             type:GET_SOLD_BOOKS_FAIL,
-            payload:"some error occurred"
-            //err.response.data.message
+            payload:err.response.data.message
         })
     }
 }
@@ -29,14 +34,16 @@ export const sellBook=(id,bookname,bookprice,bookImg,shipsTo,cardno)=>async(disp
         const config = { headers: { "Content-Type": "application/json" } };
         await axios({
             method: 'post',
-  url: `http://localhost:8000/api/v1/sell/${id}`,
-  data: {
-    img: bookImg,
-    price: bookprice,
-    shipsTo:shipsTo,
-    cardno:cardno,
-    bookname:bookname
-  }
+            withCredentials: true,
+            headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+            url: `http://localhost:8000/api/v1/sell/${id}`,
+            data: {
+                    img: bookImg,
+                    price: bookprice,
+                    shipsTo:shipsTo,
+                    cardno:cardno,
+                    bookname:bookname
+                }
         })
         dispatch({type:SELL_BOOK_SUCCESS,payload:true})
     }catch(err){

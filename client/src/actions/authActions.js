@@ -6,17 +6,20 @@ export const login=(email,password)=>async(dispatch)=>{
         dispatch({type:LOGIN_REQUEST});
         const config={headers:{"Content-Type":"application/json"}};
         const {data}=await axios({
-                        method: 'get',
-                        url: `http://localhost:8000/api/v1/login`,
+                        method: 'POST',
+                        url: `http://localhost:8000/api/v1/auth/login`,
+                        withCredentials: true,
                         data:{
                             email:email,
                             password:password
                         },
+                        headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'
+    },
                         config
         })
         dispatch({type:LOGIN_SUCCESS,payload:data.user});
     }catch(err){
-        dispatch({type:LOGIN_FAIL,payload:err.response.data.message});
+        dispatch({type:LOGIN_FAIL,payload:err.message});
     }
 }
 
@@ -32,6 +35,9 @@ try{
                             email:email,
                             password:password,
                         },
+                        withCredentials: true,
+        headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'
+    },
                         config
         })
         console.log(data);
@@ -57,7 +63,7 @@ export const forgotPassword=(email)=>async(dispatch)=>{
         const config={headers:{"Content-Type":"application/json"}};
         const {data}=await axios({
             method:'POST',
-            url: `http://localhost:8000/api/v1/forgotpassword`,
+            url: `http://localhost:8000/api/v1/auth/forgotpassword`,
             data:{
                 email:email
             },config
@@ -77,7 +83,10 @@ export const resetPassword=(token,password)=>async(dispatch)=>{
         const config={headers:{"Content-Type":"application/json"}};
         const {data}=await axios({
             method:'PUT',
-            url: `http://localhost:8000/api/v1/passwordreset/${token}`,
+            url: `http://localhost:8000/api/v1/auth/passwordreset/${token}`,
+            withCredentials: true,
+        headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'
+    },
             data:{
                 password:password
             },config

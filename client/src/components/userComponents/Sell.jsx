@@ -17,11 +17,12 @@ const Sell = ({ history }) => {
   const [bookPreview, setBookPreview] = useState("/DefBook.png");
   const [bookImg, setBookImg] = useState("");
   let [shipsTo, setShipsTo] = useState("");
-  const { user, isAuthenticated } = useSelector((state) => state.user);
   const { loading, error, soldBooks } = useSelector((state) => state.soldBooks);
   const { result } = useSelector((state) => state.result);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+
   useEffect(() => {
-    dispatch(getSoldBooks("6166b38478f476c0b807e0b5"));
+    dispatch(getSoldBooks(user._id));
   }, [dispatch]);
   useEffect(() => {
     if (!isAuthenticated) {
@@ -41,16 +42,7 @@ const Sell = ({ history }) => {
     reader.readAsDataURL(e.target.files[0]);
   };
   const sell = (e) => {
-    dispatch(
-      sellBook(
-        "6166b38478f476c0b807e0b5",
-        bookname,
-        price,
-        "lfsdlkfjsdf",
-        shipsTo,
-        cardno
-      )
-    );
+    dispatch(sellBook(user._id, bookname, price, bookImg, shipsTo, cardno));
     setsellBoxOpen(false);
   };
   console.log("sold books:", soldBooks);
@@ -68,13 +60,22 @@ const Sell = ({ history }) => {
           </SellnowBtn>
         </Header>
         <Books>
-          <Book>
-            <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
-            <BookName>Harry Potter</BookName>
-            <BookInfo>Sold by: Mr.x</BookInfo>
-            <BookInfo>$20</BookInfo>
-            <ShowStatusBtn>Show Status</ShowStatusBtn>
-          </Book>
+          {soldBooks.length > 0 ? (
+            soldBooks.map((book) => {
+              return (
+                <Book>
+                  <BookImg src={book.img.url}></BookImg>
+                  <BookName>{book.name}</BookName>
+                  <BookInfo>Sold by:{book.soldby}</BookInfo>
+                  <BookInfo>{book.price}</BookInfo>
+                  <BookSt>{book.bookStatus.toUpperCase()}</BookSt>
+                  <ShowStatusBtn>Update Status</ShowStatusBtn>
+                </Book>
+              );
+            })
+          ) : (
+            <h3>No Books Sold Yet!</h3>
+          )}
         </Books>
       </SellContainer>
       {sellBoxOpen ? (
@@ -197,5 +198,11 @@ const SellBtn = styled.button`
 `;
 const Icon = styled.div`
   color: #fff;
+`;
+const BookSt = styled.div`
+  font-size: 0.9rem;
+  color: orange;
+  margin-top: 4px;
+  font-weight: bold;
 `;
 export default Sell;

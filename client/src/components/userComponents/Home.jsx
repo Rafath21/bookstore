@@ -18,13 +18,46 @@ const Home = () => {
   return (
     <>
       <HomeContainer>
-        <Heading>Book Store</Heading>
+        <Header>
+          <Heading
+            onClick={() => {
+              history.push("/");
+            }}
+          >
+            Book Store
+          </Heading>
+          <NavItem
+            onClick={() => {
+              if (!isAuthenticated) {
+                history.push("/login");
+              } else {
+                history.push(`/sell/${user._id}`);
+              }
+            }}
+          >
+            Sell
+          </NavItem>
+          {isAuthenticated ? (
+            <>
+              <NavItem>Orders</NavItem>
+              <NavItem>Logout</NavItem>
+            </>
+          ) : (
+            <NavItem
+              onClick={() => {
+                history.push("/login");
+              }}
+            >
+              Login
+            </NavItem>
+          )}
+        </Header>
         <Books>
           {books.length > 0 ? (
             books.map((book) => {
               return (
                 <Book>
-                  <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
+                  <BookImg src={book.img.url}></BookImg>
                   <BookName>{book.name}</BookName>
                   <BookInfo>Sold by: {book.soldby}</BookInfo>
                   <BookInfo>{book.price}</BookInfo>
@@ -65,12 +98,13 @@ export const HomeContainer = styled.div`
   margin: -12px;
   padding: 0;
   flex-direction: column;
+  font-family: "Roboto", "HelveticaNeue-Light", sans-serif;
 `;
 export const Heading = styled.h1`
   font-size: 2rem;
   color: black;
-  margin: auto;
   margin-top: 2px;
+  cursor: pointer;
 `;
 export const Books = styled.div`
   display: grid;
@@ -101,7 +135,6 @@ export const BookName = styled.h3`
 `;
 export const BookInfo = styled.p`
   font-size: 1.2rem;
-  margin-top: 2px;
 `;
 export const BuynowBtn = styled.button`
   padding: 14px;
@@ -116,4 +149,17 @@ export const Nobooks = styled.h3`
   margin:auto;
   color:purple;
   `;
+export const Header = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+`;
+export const NavItem = styled.p`
+  cursor: pointer;
+  font-weight: 600;
+  &:hover {
+    color: purple;
+    transition: 0.3s;
+  }
+`;
 export default Home;

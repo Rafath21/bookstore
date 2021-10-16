@@ -3,10 +3,14 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { myOrders } from "../../actions/myOrdersActions";
 import { useEffect } from "react";
+
 const Orders = () => {
   let dispatch = useDispatch();
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+  const { orders } = useSelector((state) => state.orders);
+
   useEffect(() => {
-    dispatch(myOrders("bushra"));
+    dispatch(myOrders(user.username));
   }, []);
   return (
     <>
