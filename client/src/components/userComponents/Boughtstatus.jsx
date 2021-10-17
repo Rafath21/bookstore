@@ -33,6 +33,6 @@ const Section = styled.div`
 `;
 const StatusInfo = styled.div``;
 const Status = styled.p`
-  color: purple;
+  color: #001b48;
 `;
 export default Boughtstatus;

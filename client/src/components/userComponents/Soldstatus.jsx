@@ -1,35 +1,47 @@
 import React from "react";
 import styled from "styled-components";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { sold } from "../../actions/soldStatusActions";
 import { Book, BookName, BookImg, BookInfo } from "./Home";
 const Soldstatus = () => {
+  let location = useLocation();
+  let book = location.state;
+  const { soldStatus } = useSelector((state) => state.soldStatus);
   let dispatch = useDispatch();
   useEffect(() => {
-    dispatch(sold("6166b2fba18545cd06feaffe"));
+    dispatch(sold(book._id));
   }, [dispatch]);
   return (
     <>
       <Section>
         <Book>
-          <BookImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></BookImg>
-          <BookName>Harry Potter</BookName>
-          <BookInfo>Bought by: Mr.x</BookInfo>
-          <BookInfo>$20</BookInfo>
+          <BookImg src={book.img.url}></BookImg>
+          <BookName>{book.name}</BookName>
+          <BookInfo>
+            Bought by:
+            {soldStatus.length > 0 ? soldStatus.boughtBy : "None"}
+          </BookInfo>
+          <BookInfo>$ {book.price}</BookInfo>
         </Book>
-        <StatusInfo>
-          <h3>Update Status:</h3>
-          <select>
-            <option value="Accepted"></option>
-            <option value="Denied"></option>
-            <option value="Delivered"></option>
-          </select>
-          <br />
-          Current Status:
-          <Status>Accepted</Status>
-          <StatusSubmitbtn>Submit</StatusSubmitbtn>
-        </StatusInfo>
+        {soldStatus.length > 0 ? (
+          <StatusInfo>
+            <h3>Update Status:</h3>
+            <select>
+              <option value="Accepted">Accepted</option>
+              <option value="Denied">Denied</option>
+              <option value="Dispatched">Dispatched</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+            <br />
+            Current Status:
+            <Status>Accepted</Status>
+            <StatusSubmitbtn>Submit</StatusSubmitbtn>
+          </StatusInfo>
+        ) : (
+          ""
+        )}
       </Section>
     </>
   );
@@ -38,10 +50,11 @@ const Section = styled.div`
   width: 30vw;
   height: 40vh;
   margin: auto;
+  font-family: "Roboto", "HelveticaNeue-Light", sans-serif;
 `;
 const StatusInfo = styled.div``;
 const Status = styled.p`
-  color: purple;
+  color: #001b48;
 `;
 const StatusSubmitbtn = styled.button`
   padding: 10px;

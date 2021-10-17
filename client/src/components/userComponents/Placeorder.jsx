@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { placeOrder } from "../../actions/placeOrderActions";
@@ -21,36 +21,39 @@ const Placeorder = () => {
   let state = location.state;
 
   const order = () => {
-    const shippingInfo = {
-      address,
-      pincode,
-      phone,
-      city,
-    };
-    dispatch(placeOrder(user.username, bookid, shippingInfo));
-  };
-  useEffect(() => {
-    if (orderPlaced) {
-      history.push("/");
+    if (isNaN(pincode)) {
+      alert("Pincode is invalid!");
+    } else if (isNaN(phone)) {
+      alert("Phone number is invalid!");
+    } else if (address == "" || pincode == "" || phone == "" || city == "") {
+      alert("Please fill all the required fields correctly.");
     } else {
-      alert("couldn't place order");
+      const shippingInfo = {
+        address,
+        pincode,
+        phone,
+        city,
+      };
+      dispatch(placeOrder(user.username, bookid, shippingInfo));
+      history.push("/");
     }
-  }, [orderPlaced]);
+  };
   return (
     <>
       <Wrapper>
         <BookSection>
-          <h2>BOOK INFO:</h2>
-          <Img src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></Img>
+          <Img src={state.bookimg}></Img>
           <BookInfo>{state.bookname}</BookInfo>
           <BookInfo>Sold by: {state.booksoldby}</BookInfo>
-          <BookInfo>{`$${state.bookprice}`}</BookInfo>
+          <BookInfo>$ {state.bookprice}</BookInfo>
         </BookSection>
         <ShippingInfo>
           <h2>SHIPPING INFO:</h2>
           <Info>
             <h4>Address:</h4>
             <Input
+              type="text"
+              required
               onChange={(e) => {
                 setAddress(e.target.value);
               }}
@@ -59,6 +62,7 @@ const Placeorder = () => {
           <Info>
             <h4>Pincode:</h4>
             <Input
+              required
               onChange={(e) => {
                 setPincode(e.target.value);
               }}
@@ -67,6 +71,7 @@ const Placeorder = () => {
           <Info>
             <h4>Phone:</h4>
             <Input
+              required
               onChange={(e) => {
                 setPhone(e.target.value);
               }}
@@ -75,13 +80,14 @@ const Placeorder = () => {
           <Info>
             <h4>City:</h4>
             <Input
+              type="text"
+              required
               onChange={(e) => {
                 setCity(e.target.value);
               }}
             ></Input>
           </Info>
         </ShippingInfo>
-        <PaymentInfo></PaymentInfo>
         <PlaceOrder onClick={order}>Place Order</PlaceOrder>
       </Wrapper>
     </>
@@ -103,7 +109,8 @@ const BookSection = styled.div`
 const ShippingInfo = styled.div`
   display: flex;
   flex-direction: column;
-  width: 51%;
+  width: 48%;
+  color: #001b48;
 `;
 const Info = styled.div`
   display: flex;
@@ -119,7 +126,7 @@ const BookInfo = styled.p`
 const Input = styled.input`
   padding: 12px;
   border: none;
-  border-bottom: 2px solid purple;
+  border-bottom: 2px solid #001b48;
   &:focus {
     outline: none;
   }
@@ -128,10 +135,10 @@ const Input = styled.input`
 const PaymentInfo = styled.div``;
 const PlaceOrder = styled.button`
   padding: 20px;
-  margin: 11%;
   border-radius: 10px;
   background: orange;
   color: white;
   border: none;
+  margin-top: 15px;
 `;
 export default Placeorder;

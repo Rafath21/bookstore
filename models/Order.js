@@ -2,7 +2,7 @@ const mongoose=require('mongoose');
 const OrderSchema=new mongoose.Schema({
     book:{
            type: mongoose.Schema.Types.ObjectId,
-           ref:'Books'
+           ref:'Books',
     },
     shippingInfo:{
         address:{

@@ -1,10 +1,12 @@
 //basically, all my orders
 
 const Order = require("../../models/Order")
-
+const Book=require("../../models/Books")
 exports.myOrders=async(req,res,next)=>{
     try{
-    let orders=await Order.find({boughtBy:req.params.username})
+    let orders=await Order.find({boughtBy:req.params.username}).populate('book');
+    /*let book=await Book.findById(orders.book);
+    orders.book=book*/
     res.status(200).json({
         orders
     })

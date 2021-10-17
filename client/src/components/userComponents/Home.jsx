@@ -4,7 +4,8 @@ import styled from "styled-components";
 import axios from "axios";
 import { getBooks } from "../../actions/homeActions";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
+import { logout } from "../../actions/authActions";
 const Home = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -39,8 +40,20 @@ const Home = () => {
           </NavItem>
           {isAuthenticated ? (
             <>
-              <NavItem>Orders</NavItem>
-              <NavItem>Logout</NavItem>
+              <NavItem
+                onClick={() => {
+                  history.push("/orders");
+                }}
+              >
+                Orders
+              </NavItem>
+              <NavItem
+                onClick={() => {
+                  dispatch(logout());
+                }}
+              >
+                Logout
+              </NavItem>
             </>
           ) : (
             <NavItem
@@ -60,7 +73,7 @@ const Home = () => {
                   <BookImg src={book.img.url}></BookImg>
                   <BookName>{book.name}</BookName>
                   <BookInfo>Sold by: {book.soldby}</BookInfo>
-                  <BookInfo>{book.price}</BookInfo>
+                  <BookInfo>$ {book.price}</BookInfo>
                   <BuynowBtn
                     onClick={() => {
                       if (!isAuthenticated) {
@@ -69,6 +82,7 @@ const Home = () => {
                         history.push({
                           pathname: `/placeorder/${book._id}`,
                           state: {
+                            bookimg: book.img.url,
                             bookid: book._id,
                             bookname: book.name,
                             bookprice: book.price,
@@ -130,16 +144,17 @@ export const BookImg = styled.img`
 
 export const BookName = styled.h3`
   font-size: 1.2rem;
-  color: purple;
+  color: #001b48;
   font-weight: bold;
 `;
 export const BookInfo = styled.p`
   font-size: 1.2rem;
+  margin: 8px;
 `;
 export const BuynowBtn = styled.button`
   padding: 14px;
   color: white;
-  background: purple;
+  background: #001b48;
   border: none;
   border-radius: 20px;
 `;
@@ -147,7 +162,7 @@ export const Nobooks = styled.h3`
   font-size=2rem;
   flex-grow:0.9;
   margin:auto;
-  color:purple;
+  color:#001b48;
   `;
 export const Header = styled.div`
   display: flex;
@@ -158,7 +173,7 @@ export const NavItem = styled.p`
   cursor: pointer;
   font-weight: 600;
   &:hover {
-    color: purple;
+    color: #001b48;
     transition: 0.3s;
   }
 `;

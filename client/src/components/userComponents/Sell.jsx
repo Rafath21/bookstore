@@ -5,10 +5,11 @@ import {
   HomeContainer as SellContainer,
   BuynowBtn as ShowStatusBtn,
 } from "./Home";
+import { useHistory } from "react-router-dom";
 import { getSoldBooks, sellBook } from "../../actions/sellActions";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-const Sell = ({ history }) => {
+const Sell = () => {
   const dispatch = useDispatch();
   const [sellBoxOpen, setsellBoxOpen] = useState(false);
   let [bookname, setBookname] = useState("");
@@ -20,7 +21,7 @@ const Sell = ({ history }) => {
   const { loading, error, soldBooks } = useSelector((state) => state.soldBooks);
   const { result } = useSelector((state) => state.result);
   const { user, isAuthenticated } = useSelector((state) => state.user);
-
+ const history = useHistory();
   useEffect(() => {
     dispatch(getSoldBooks(user._id));
   }, [dispatch]);
@@ -67,9 +68,18 @@ const Sell = ({ history }) => {
                   <BookImg src={book.img.url}></BookImg>
                   <BookName>{book.name}</BookName>
                   <BookInfo>Sold by:{book.soldby}</BookInfo>
-                  <BookInfo>{book.price}</BookInfo>
+                  <BookInfo>$ {book.price}</BookInfo>
                   <BookSt>{book.bookStatus.toUpperCase()}</BookSt>
-                  <ShowStatusBtn>Update Status</ShowStatusBtn>
+                  <ShowStatusBtn
+                    onClick={() => {
+                      history.push({
+                        pathname: "/soldstatus",
+                        state: book,
+                      });
+                    }}
+                  >
+                    Update Status
+                  </ShowStatusBtn>
                 </Book>
               );
             })
@@ -96,12 +106,12 @@ const Sell = ({ history }) => {
             ></InputImg>
           </>
           <Field>Book Name:</Field>
-          <input
+          <InputInfo
             type="text"
             onChange={(e) => {
               setBookname(e.target.value);
             }}
-          ></input>
+          ></InputInfo>
           <Field>Book Price:(in usd)</Field>
           <InputInfo
             onChange={(e) => {
@@ -148,17 +158,17 @@ const SellnowBtn = styled.button`
   margin-left: 10%;
   height: 51%;
   border: none;
-  background: purple;
+  background: #001b48;
   color: #ffff;
   border-radius: 8%;
   padding: 13px;
 `;
 const SellBox = styled.div`
-  width: 30vw;
+  width: 33vw;
   padding: 1%;
-  background: purple;
+  background: #001b48;
   position: absolute;
-  top: 21%;
+  top: 15%;
   left: 30%;
   display: flex;
   flex-direction: column;
@@ -172,7 +182,7 @@ const Field = styled.p`
 const InputInfo = styled.input`
   padding: 7px;
   border: none;
-  background: purple;
+  background: #001b48;
   border-bottom: 2px solid #ffff;
   color: #ffff;
   &:focus {
@@ -200,9 +210,9 @@ const Icon = styled.div`
   color: #fff;
 `;
 const BookSt = styled.div`
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   color: orange;
-  margin-top: 4px;
+  margin-top: -12px;
   font-weight: bold;
 `;
 export default Sell;

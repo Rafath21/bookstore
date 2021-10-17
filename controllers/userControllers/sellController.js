@@ -7,7 +7,6 @@ exports.sellBooks=async(req,res)=>{
     const myCloud=await cloudinary.v2.uploader.upload(req.body.img,{
         folder:"bookCovers",
         width:150,
-        crop:scale
     });
 
     const id=req.params.id;
@@ -18,10 +17,8 @@ exports.sellBooks=async(req,res)=>{
     }
     console.log("req.body:",req.body);
     const {bookname,img,price,shipsTo,cardno}=req.body;
+    try{
     let user=await User.findById(id);
-    if(!user){
-        res.status(400).json("User does not exist");
-    }
     let username=user.username;
     console.log("username:",username);
     const obj={
@@ -36,7 +33,6 @@ exports.sellBooks=async(req,res)=>{
         shipsTo:shipsTo,
         cardno:cardno
     }
-    try{
     let bookCreated=await Book.create(obj);
     user.addSold(bookCreated._id);
     await user.save();
@@ -53,8 +49,8 @@ exports.sellBooks=async(req,res)=>{
     })
     }
     catch(err){
-        res.status(400).json({
-            message: err.message
+          res.status(400).json({
+            message:err.message
         })
     }
     

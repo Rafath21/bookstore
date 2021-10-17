@@ -8,7 +8,7 @@ const Orders = () => {
   let dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const { orders } = useSelector((state) => state.orders);
-
+  let paid = true;
   useEffect(() => {
     dispatch(myOrders(user.username));
   }, []);
@@ -17,13 +17,33 @@ const Orders = () => {
       <Container>
         <Heading>Your Orders</Heading>
         <Items>
-          <Item>
-            <ItemImg src="https://images-na.ssl-images-amazon.com/images/I/5160dwNeqSL._SX323_BO1,204,203,200_.jpg"></ItemImg>
-            <ItemName>Harry Potter</ItemName>
-            <ItemInfo>Sold by: Mr.x</ItemInfo>
-            <ItemInfo>$20</ItemInfo>
-            <OrderStatus denied={false}>Order Accepted</OrderStatus>
-          </Item>
+          {orders.length > 0
+            ? orders.map((order) => {
+                return (
+                  <Item>
+                    <ItemImg src={order.book.img.url}></ItemImg>
+                    <ItemName>{order.book.name}</ItemName>
+                    <Soldby>Sold by:</Soldby>
+                    <ItemInfo>{order.book.soldby} </ItemInfo>
+                    <ItemInfo>$ {order.book.price}</ItemInfo>
+                    <OrderStatus>
+                      {order.OrderStatus == "Denied" ? (
+                        <OrderDenied>
+                          <ItemInfo>Order Accepted</ItemInfo>
+                        </OrderDenied>
+                      ) : (
+                        <OrderPlaced>
+                          <ItemInfo>{order.OrderStatus}</ItemInfo>
+                        </OrderPlaced>
+                      )}
+                      <PaymentInfo>
+                        {paid ? <Paid>Paid</Paid> : <Paynow>Pay now</Paynow>}
+                      </PaymentInfo>
+                    </OrderStatus>
+                  </Item>
+                );
+              })
+            : ""}
         </Items>
       </Container>
     </>
@@ -34,6 +54,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: "Roboto", "HelveticaNeue-Light", sans-serif;
 `;
 const Heading = styled.p`
   font-size: 2rem;
@@ -44,6 +65,7 @@ const Items = styled.div`
   flex-grow: 0.8;
   display: flex;
   flex-direction: column;
+  width: 50vw;
 `;
 const Item = styled.div`
   display: flex;
@@ -54,16 +76,51 @@ const Item = styled.div`
   padding: 5px;
   border-bottom: 2px solid orange;
 `;
+const Soldby = styled.p`
+  font-weight: bold;
+`;
 const ItemImg = styled.img`
   max-height: 10%;
   max-width: 17%;
 `;
 const ItemInfo = styled.p``;
 const ItemName = styled.p`
-  color: purple;
+  color: #001b48;
 `;
+
+const OrderPlaced = styled.div`
+  background: #90d790a6;
+  padding: 3px;
+  border-radius: 15px;
+  color: #1d5c5c;
+  border: 2px solid #47976a;
+  font-size: 0.8rem;
+`;
+const OrderDenied = styled.div`
+  background: #f38787;
+  padding: 3px;
+  border-radius: 15px;
+  color: #800000;
+  border: 2px solid red;
+  font-size: 0.8rem;
+`;
+const PaymentInfo = styled.button`
+  width: 60%;
+  background: #87cbf3;
+  padding: 1px;
+  text-align: center;
+  border-radius: 10px;
+  color: #001b48;
+  border: 2px solid #6c8ff1;
+  height: 10%;
+  margin-top: 5px;
+  margin-left: 16px;
+`;
+const Paid = styled.p``;
+const Paynow = styled.p``;
+
 const OrderStatus = styled.div`
-  padding: 15px;
-  color: ${(props) => (props.denied ? "Red" : "Green")};
+  display: flex;
+  flex-direction: column;
 `;
 export default Orders;

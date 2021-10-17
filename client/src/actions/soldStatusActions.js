@@ -7,10 +7,12 @@ export const sold=(id)=>async(dispatch)=>{
         dispatch({
             type:GET_SOLD_STATUS_REQUEST
         })
-        const config = { headers: { "Content-Type": "application/json" } };
         let {data}=await axios({
                         method: 'get',
-                        url: `http://localhost:8000/api/v1/soldstatus/${id}`,config
+                        url: `http://localhost:8000/api/v1/soldstatus/${id}`,
+                        withCredentials: true,
+        headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'
+    }
         })
         dispatch({type:GET_SOLD_STATUS_SUCCESS,payload:data})
     }catch(err){

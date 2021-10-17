@@ -7,10 +7,12 @@ export const myOrders=(username)=>async(dispatch)=>{
         dispatch({
             type:GET_MY_ORDERS_REQUEST
         })
-        const config = { headers: { "Content-Type": "application/json" } };
         let {data}=await axios({
                         method: 'get',
-                        url: `http://localhost:8000/api/v1/orders/${username}`,config
+                        withCredentials: true,
+        headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'
+    },
+                        url: `http://localhost:8000/api/v1/orders/${username}`
         })
         dispatch({type:GET_MY_ORDERS_SUCCESS,payload:data})
     }catch(err){
