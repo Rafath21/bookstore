@@ -67,7 +67,7 @@ const Items = styled.div`
   flex-direction: column;
   width: 50vw;
 `;
-const Item = styled.div`
+export const Item = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -76,15 +76,15 @@ const Item = styled.div`
   padding: 5px;
   border-bottom: 2px solid orange;
 `;
-const Soldby = styled.p`
+export const Soldby = styled.p`
   font-weight: bold;
 `;
-const ItemImg = styled.img`
+export const ItemImg = styled.img`
   max-height: 10%;
   max-width: 17%;
 `;
-const ItemInfo = styled.p``;
-const ItemName = styled.p`
+export const ItemInfo = styled.p``;
+export const ItemName = styled.p`
   color: #001b48;
 `;
 

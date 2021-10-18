@@ -38,7 +38,6 @@ try{
         headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'
     }
         })
-        console.log(data);
         dispatch({type:REGISTER_USER_SUCCESS,payload:data.user});
     }catch(err){
         dispatch({type:REGISTER_USER_FAIL,payload:err.response.data.message});
@@ -48,6 +47,7 @@ try{
 export const logout=()=>async(dispatch)=>{
     try{
         await axios.get("http://localhost:8000/api/v1/logout");
+        localStorage.removeItem("authToken");
         dispatch({type:LOGOUT_SUCCESS});
     }
     catch(err){

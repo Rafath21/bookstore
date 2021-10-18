@@ -6,7 +6,7 @@ import { sellReducer, soldReducer } from "./reducers/sellReducers";
 import { placeOrderReducer } from "./reducers/placeOrderReducer";
 import { getOrdersReducer } from "./reducers/myOrdersReducer";
 import { boughtStatusReducer } from "./reducers/boughtStatusReducer";
-import { soldStatusReducer } from "./reducers/soldStatusReducer";
+import { orderUpdateReducer, soldStatusReducer } from "./reducers/soldStatusReducer";
 import { authReducer, forgotPasswordReducer } from "./reducers/authReducers";
 
 const reducer=combineReducers({
@@ -18,7 +18,8 @@ const reducer=combineReducers({
     boughtStatus:boughtStatusReducer,
     soldStatus:soldStatusReducer,
     user:authReducer,
-    forgotPassword:forgotPasswordReducer
+    forgotPassword:forgotPasswordReducer,
+    isOrderUpdated:orderUpdateReducer
 });
 
 let initialState={};

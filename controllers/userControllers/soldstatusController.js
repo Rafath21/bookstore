@@ -1,5 +1,6 @@
 const Order=require('../../models/Order');
 const Book=require('../../models/Books');
+const User=require('../../models/User');
 const mongoose=require('mongoose');
 const sendEmail=require('../../utils/sendEmail');
 
@@ -24,8 +25,10 @@ const book=await Book.findById(bookid);
   const booksold = await Order.findOne({ book:  mongoose.Types.ObjectId(bookid) });
   const buyer=await User.findOne({username:booksold.boughtBy})
   console.log("buyer:",buyer);
-  if(req.body.OrderStatus=="Deny"){
+  if(req.body.OrderStatus=="Denied"){
     booksold.remove();
+    book.updateBookStatus("unsold");
+    book.save();
     //send an email to buyer that their request has been denied.
     const message=`
        <h1>Hey ${buyer.username}!</h1>
