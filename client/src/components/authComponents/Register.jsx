@@ -54,7 +54,7 @@ let Register = () => {
             class="name-input"
             type="text"
             placeholder="Enter Username"
-            name="name"
+            name="username"
             required
           />
           <label for="email">

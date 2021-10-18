@@ -46,7 +46,7 @@ try{
 
 export const logout=()=>async(dispatch)=>{
     try{
-        await axios.get("http://localhost:8000/api/v1/logout");
+        await axios.get("http://localhost:8000/api/v1/auth/logout");
         localStorage.removeItem("authToken");
         dispatch({type:LOGOUT_SUCCESS});
     }

@@ -21,7 +21,7 @@ const Sell = () => {
   const { loading, error, soldBooks } = useSelector((state) => state.soldBooks);
   const { result } = useSelector((state) => state.result);
   const { user, isAuthenticated } = useSelector((state) => state.user);
- const history = useHistory();
+  const history = useHistory();
   useEffect(() => {
     dispatch(getSoldBooks(user._id));
   }, [dispatch]);
@@ -67,7 +67,8 @@ const Sell = () => {
                 <Book>
                   <BookImg src={book.img.url}></BookImg>
                   <BookName>{book.name}</BookName>
-                  <BookInfo>Sold by:{book.soldby}</BookInfo>
+                  <BookInfo>Sold by:</BookInfo>
+                  <BookInfo>{book.soldby}</BookInfo>
                   <BookInfo>$ {book.price}</BookInfo>
                   <BookSt>{book.bookStatus.toUpperCase()}</BookSt>
                   <ShowStatusBtn
@@ -144,35 +145,45 @@ const Sell = () => {
 };
 const Header = styled.h1`
   font-size: 2rem;
-  color: black;
+  color: #f17e0b;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   margin: 0;
   padding: 0;
-  background: orange;
+  height: 62px;
+  background: #001b48;
+  @media (max-width: 700px) {
+    font-size: 0.7rem;
+  }
 `;
 const Heading = styled.h3``;
 const SellnowBtn = styled.button`
   margin-left: 10%;
   height: 51%;
   border: none;
-  background: #001b48;
+  background: #f17e0b;
   color: #ffff;
   border-radius: 8%;
-  padding: 13px;
+  padding: 8px;
 `;
 const SellBox = styled.div`
   width: 33vw;
   padding: 1%;
   background: #001b48;
   position: absolute;
-  top: 15%;
+  top: 10%;
   left: 30%;
   display: flex;
   flex-direction: column;
   font-family: "Roboto", "HelveticaNeue-Light", sans-serif;
+  @media (max-width: 800px) {
+    width: 80vw;
+    padding: 7%;
+    top: 10%;
+    left: 3%;
+  }
 `;
 const Field = styled.p`
   font-size: 1rem;
@@ -198,7 +209,7 @@ const InputImg = styled.input`
 `;
 const SellBtn = styled.button`
   padding: 10px;
-  background: orange;
+  background: #f17e0b;
   color: white;
   border: none;
   &:hover {

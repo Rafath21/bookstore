@@ -89,6 +89,9 @@ const Section = styled.div`
   height: 40vh;
   margin: auto;
   font-family: "Roboto", "HelveticaNeue-Light", sans-serif;
+  @media (max-width: 800px) {
+    width: 85vw;
+  }
 `;
 const StatusInfo = styled.div`
   margin-left: 40px;
@@ -112,9 +115,22 @@ const Order = styled.div`
   padding: 20px;
   justify-content: space-around;
   align-items: center;
+  @media (max-width: 800px) {
+    width: 95%;
+    padding: 3px;
+    margin-top: 60px;
+  }
 `;
-const OrderImg = styled.img``;
-const OrderName = styled.p``;
+const OrderImg = styled.img`
+  @media (max-width: 800px) {
+    width: 24%;
+  }
+`;
+const OrderName = styled.p`
+  @media (max-width: 800px) {
+    display: none;
+  }
+`;
 const OrderedBy = styled.p`
   color: #001b48;
   font-weight: bold;

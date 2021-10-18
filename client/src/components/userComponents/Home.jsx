@@ -15,18 +15,16 @@ const Home = () => {
     dispatch(getBooks());
   }, [dispatch]);
   console.log(books);
-
   return (
     <>
       <HomeContainer>
         <Header>
-          <Heading
+          <Logo
+            src="/bookLogo.png"
             onClick={() => {
               history.push("/");
             }}
-          >
-            Book Store
-          </Heading>
+          ></Logo>
           <NavItem
             onClick={() => {
               if (!isAuthenticated) {
@@ -72,7 +70,8 @@ const Home = () => {
                 <Book>
                   <BookImg src={book.img.url}></BookImg>
                   <BookName>{book.name}</BookName>
-                  <BookInfo>Sold by: {book.soldby}</BookInfo>
+                  <BookInfo>Sold by:</BookInfo>
+                  <BookInfo> {book.soldby}</BookInfo>
                   <BookInfo>$ {book.price}</BookInfo>
                   <BuynowBtn
                     onClick={() => {
@@ -114,11 +113,11 @@ export const HomeContainer = styled.div`
   flex-direction: column;
   font-family: "Roboto", "HelveticaNeue-Light", sans-serif;
 `;
-export const Heading = styled.h1`
-  font-size: 2rem;
-  color: black;
-  margin-top: 2px;
-  cursor: pointer;
+export const Logo = styled.img`
+  max-width: 7%;
+  @media (max-width: 700px) {
+    max-width: 11%;
+  }
 `;
 export const Books = styled.div`
   display: grid;
@@ -126,6 +125,10 @@ export const Books = styled.div`
   flex-grow: 0.9;
   grid-row-gap: 20px;
   margin-top: 20px;
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-row-gap: 13px;
+  }
 `;
 export const Book = styled.div`
   width: 74%;
@@ -135,11 +138,18 @@ export const Book = styled.div`
   padding: 20px;
   justify-content: center;
   align-items: center;
+  @media (max-width: 700px) {
+    width: 45vw;
+  }
 `;
 export const BookImg = styled.img`
   max-height: 15%;
   max-width: 47%;
   flex-grow: 0.7;
+  @media (max-width: 700px) {
+    max-height: 46%;
+    max-width: 91%;
+  }
 `;
 
 export const BookName = styled.h3`
@@ -150,6 +160,7 @@ export const BookName = styled.h3`
 export const BookInfo = styled.p`
   font-size: 1.2rem;
   margin: 8px;
+  margin-top: -8px;
 `;
 export const BuynowBtn = styled.button`
   padding: 14px;
@@ -157,24 +168,33 @@ export const BuynowBtn = styled.button`
   background: #001b48;
   border: none;
   border-radius: 20px;
+  @media (max-width: 700px) {
+    padding: 6px;
+  }
 `;
 export const Nobooks = styled.h3`
   font-size=2rem;
   flex-grow:0.9;
-  margin:auto;
+  margin-left: 20%;
   color:#001b48;
   `;
 export const Header = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
+  color: #f17e0b;
+  background: #001b48;
 `;
 export const NavItem = styled.p`
   cursor: pointer;
   font-weight: 600;
   &:hover {
-    color: #001b48;
+    color: #ffff;
     transition: 0.3s;
+  }
+  @media (max-width: 700px) {
+    font-size: 0.7rem;
   }
 `;
 export default Home;

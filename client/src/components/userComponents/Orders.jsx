@@ -8,7 +8,7 @@ const Orders = () => {
   let dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const { orders } = useSelector((state) => state.orders);
-  let paid = true;
+  let paid = false;
   useEffect(() => {
     dispatch(myOrders(user.username));
   }, []);
@@ -66,6 +66,9 @@ const Items = styled.div`
   display: flex;
   flex-direction: column;
   width: 50vw;
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 export const Item = styled.div`
   display: flex;
@@ -86,6 +89,9 @@ export const ItemImg = styled.img`
 export const ItemInfo = styled.p``;
 export const ItemName = styled.p`
   color: #001b48;
+  @media (max-width: 800px) {
+    display: none;
+  }
 `;
 
 const OrderPlaced = styled.div`
@@ -95,6 +101,7 @@ const OrderPlaced = styled.div`
   color: #1d5c5c;
   border: 2px solid #47976a;
   font-size: 0.8rem;
+  text-align: center;
 `;
 const OrderDenied = styled.div`
   background: #f38787;
@@ -105,9 +112,8 @@ const OrderDenied = styled.div`
   font-size: 0.8rem;
 `;
 const PaymentInfo = styled.button`
-  width: 60%;
   background: #87cbf3;
-  padding: 1px;
+  padding: 3px;
   text-align: center;
   border-radius: 10px;
   color: #001b48;

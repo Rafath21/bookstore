@@ -36,6 +36,8 @@ app.use("/api/v1/soldstatus",require('./routes/userRoutes/soldstatusRoute')); //
 app.use("/api/v1/boughtstatus",require('./routes/userRoutes/boughtstatusRoute')) //id here is id of one single book bought
 
 app.use("/api/v1/placeorder",require("./routes/userRoutes/placeOrderRoute")) //id here is id of the book currently being ordered
+app.use("/api/v1/payment",require("./routes/userRoutes/placeOrderRoute")) //id here is id of the book currently being ordered
+
 app.use("/api/v1/allusers",require('./routes/adminRoutes/allUsersRoute'))
 app.use("/api/v1/allorders",require('./routes/adminRoutes/allOrdersRoute'))
 app.use("/api/v1/allbooks",require('./routes/adminRoutes/allBooksRoute'))

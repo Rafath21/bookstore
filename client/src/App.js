@@ -9,7 +9,10 @@ import Register from "./components/authComponents/Register";
 import Login from "./components/authComponents/Login";
 import ResetPassword from "./components/authComponents/Resetpassword";
 import ForgotPassword from "./components/authComponents/Forgotpassword"
-
+import axios from "axios";
+import Payment from "./components/userComponents/Payment";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
@@ -20,6 +23,18 @@ const GlobalStyle = createGlobalStyle`
   }
   `
 function App() {
+   const { isAuthenticated, user } = useSelector((state) => state.user);
+
+  const [stripeApiKey, setStripeApiKey] = useState("");
+
+  async function getStripeApiKey() {
+    const { data } = await axios.get("/api/v1/stripeapikey");
+
+    setStripeApiKey(data.stripeApiKey);
+  }
+  useEffect(()=>{
+getStripeApiKey();
+  },[])
   return (
     <>
       <Router>
@@ -51,6 +66,11 @@ function App() {
           <Route path="/orders">
             <Orders/>
           </Route>
+          {stripeApiKey && (
+        <Elements stripe={loadStripe(stripeApiKey)}>
+          <Route exact path="/process/payment" component={Payment} />
+        </Elements>
+      )}
         <Route path="/">
             <Home/>
           </Route>
